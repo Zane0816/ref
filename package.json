@@ -30,8 +30,8 @@
     "test": "mocha -gc --reporter spec --use_strict"
   },
   "dependencies": {
-    "bindings": "1",
-    "debug": "4",
+    "bindings": "^1.5.0",
+    "debug": "^4.1.1",
     "nan": "^2.14.0"
   },
   "devDependencies": {
