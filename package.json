@@ -24,10 +24,10 @@
     "type": "git",
     "url": "git://github.com/TooTallNate/ref.git"
   },
-  "main": "./lib/ref.js",
+  "main": "./lib/ref-ts.ts",
   "scripts": {
     "docs": "node docs/compile",
-    "test": "mocha -gc --reporter spec --use_strict"
+    "test": "mocha -r ts-node/register test/types.ts"
   },
   "dependencies": {
     "bindings": "^1.5.0",
@@ -35,11 +35,21 @@
     "nan": "^2.14.0"
   },
   "devDependencies": {
+    "@types/mocha": "^5.2.7",
+    "@types/node": "^12.12.5",
+    "@typescript-eslint/eslint-plugin": "^2.6.0",
     "dox": "0.9.0",
+    "eslint": "^6.6.0",
+    "eslint-config-prettier": "^6.5.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-prettier": "^3.1.1",
     "highlight.js": "1",
     "jade": "1",
     "marked": "0.5.2",
-    "mocha": "*",
+    "mocha": "^6.2.2",
+    "prettier": "^1.18.2",
+    "ts-node": "^8.5.2",
+    "typescript": "^3.6.4",
     "weak": "1"
   }
 }
