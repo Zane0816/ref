@@ -24,7 +24,8 @@
     "type": "git",
     "url": "git://github.com/TooTallNate/ref.git"
   },
-  "main": "./lib/ref-ts.ts",
+  "main": "./lib/ref.js",
+  "typings": "./types/index.d.ts",
   "scripts": {
     "docs": "node docs/compile",
     "test": "mocha -r ts-node/register test/types.ts"
