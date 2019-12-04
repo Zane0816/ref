@@ -17,7 +17,7 @@ describe('coerce', function() {
     const buf = CreateRefBuffer(Buffer.alloc(ref.sizeof.int), coerceType('int'))
     const type = getType(buf)
     strictEqual(types.int, type)
-    strictEqual('int', buf.type.name)
+    strictEqual('int', buf.type?.name)
   })
 
   it('should coerce "Object" to `ref.types.Object`', function() {
