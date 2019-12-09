@@ -14,7 +14,8 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "typeRoots": ["node_modules/@types"],
-    "lib": ["es6", "es7"]
+    "lib": ["es6", "es7"],
+    "types": ["node"]
   },
   "exclude": ["node_modules"],
   "files": ["./lib/index.ts"]

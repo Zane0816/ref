@@ -51,7 +51,6 @@
     "mocha": "^6.2.2",
     "prettier": "^1.18.2",
     "ts-node": "^8.5.2",
-    "typescript": "^3.6.4",
-    "weak": "1"
+    "typescript": "^3.6.4"
   }
 }
