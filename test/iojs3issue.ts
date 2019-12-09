@@ -1,4 +1,4 @@
-import { coerceType, CreateRefBuffer, deref, ref } from '../lib/ref-ts'
+import { coerceType, CreateRefBuffer, deref, ref } from '../lib'
 import assert from 'assert'
 
 // This will check if the new Buffer implementation behaves like the pre io.js 3.0 one did:

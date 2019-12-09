@@ -1,4 +1,4 @@
-import nodeRef, { ref, deref, types, alloc, CreateRefBuffer, coerceType } from '../lib/ref-ts'
+import nodeRef, { ref, deref, types, alloc, CreateRefBuffer, coerceType } from '../lib/index'
 import { equal, strictEqual, throws } from 'assert'
 
 describe('ref(), deref()', function() {

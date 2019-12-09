@@ -1,4 +1,4 @@
-import ref, { readInt64BE, readInt64LE, readUInt64BE, readUInt64LE, writeInt64BE, writeInt64LE, writeUInt64BE, writeUInt64LE } from '../lib/ref-ts'
+import ref, { readInt64BE, readInt64LE, readUInt64BE, readUInt64LE, writeInt64BE, writeInt64LE, writeUInt64BE, writeUInt64LE } from '../lib/index'
 import { equal, throws, strict as assert } from 'assert'
 
 describe('int64', function() {

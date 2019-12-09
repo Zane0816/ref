@@ -1,4 +1,4 @@
-import { alloc } from '../lib/ref-ts'
+import { alloc } from '../lib/index'
 import { strictEqual } from 'assert'
 
 describe('char', function() {

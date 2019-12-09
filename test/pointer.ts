@@ -1,4 +1,4 @@
-import ref, { coerceType, CreateRefBuffer } from '../lib/ref-ts'
+import ref, { coerceType, CreateRefBuffer } from '../lib/index'
 import { strictEqual, strict as assert, throws, equal } from 'assert'
 // import weak from 'weak'
 

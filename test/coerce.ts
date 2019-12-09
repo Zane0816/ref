@@ -1,4 +1,4 @@
-import ref, { coerceType, getType, types, get, set, CreateRefBuffer } from '../lib/ref-ts'
+import ref, { coerceType, getType, types, get, set, CreateRefBuffer } from '../lib/index'
 import { equal, strictEqual, throws, strict as assert } from 'assert'
 
 describe('coerce', function() {

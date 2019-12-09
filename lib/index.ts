@@ -1,8 +1,65 @@
 import { strict as assert } from 'assert'
 import { endianness } from 'os'
 import { inspect } from 'util'
-import INodeRef, { RefBuffer, Type } from '../types'
 
+interface INodeRef {
+  sizeof: { [key in refBaseTypes]: number }
+  alignof: { [key in refBaseTypes]: number }
+  NULL: Buffer
+  address: (buffer: Buffer, offset?: number) => number
+  hexAddress: (buffer: Buffer, offset: number) => string
+  isNull: (buffer: Buffer, offset?: number) => boolean
+  readObject: (buffer: Buffer, offset?: number) => any
+  writeObject: (buffer: Buffer, offset: number, obj: Object, persistent: boolean) => {}
+  readPointer: (buffer: Buffer, offset: number, size: number) => Buffer
+  writePointer: (buffer: Buffer, offset: number, ptr: Buffer) => {}
+  readInt64: (buffer: Buffer, offset?: number) => Buffer
+  writeInt64: (buffer: Buffer, offset: number, value: number) => {}
+  readUInt64: (buffer: Buffer, offset?: number) => Buffer
+  writeUInt64: (buffer: Buffer, offset: number, value: number) => {}
+  readCString: (buffer: Buffer, offset?: number) => {}
+  reinterpret: (buffer: Buffer, size: number, offset: number) => Buffer
+  reinterpretUntilZeros: (buffer: Buffer, size: number, offset?: number) => Buffer
+}
+interface Type {
+  /** The size in bytes required to hold this datatype. */
+  size: number
+  /** The current level of indirection of the buffer. */
+  indirection: number
+  /** To invoke when `ref.get` is invoked on a buffer of this type. */
+  get(buffer: RefBuffer, offset: number): any
+  /** To invoke when `ref.set` is invoked on a buffer of this type. */
+  set(buffer: RefBuffer, offset: number, value: any): void
+  /** The name to use during debugging for this datatype. */
+  name?: string
+  /** The alignment of this datatype when placed inside a struct. */
+  alignment?: number
+}
+declare class RefBuffer extends Buffer {
+  type?: Type
+  _refs: Array<Object | Buffer>
+  address(): number
+  hexAddress(): string
+  isNull(): boolean
+  ref(): RefBuffer
+  deref(): RefBuffer
+  readObject(offset: number): any
+  writeObject(obj: Object, offset: number): void
+  readPointer(offset: number, size?: number): Buffer
+  writePointer(ptr: Buffer, offset?: number): void
+  readCString(offset?: number): string
+  writeCString(string: string, offset?: number, encoding?: BufferEncoding): void
+  readInt64BE(offset: number): number
+  writeInt64BE(val: number, offset: number): void
+  readUInt64BE(offset: number): number
+  writeUInt64BE(val: number, offset: number): void
+  readInt64LE(offset: number): number
+  writeInt64LE(val: number, offset: number): void
+  readUInt64LE(offset: number): number
+  writeUInt64LE(val: number, offset: number): void
+  reinterpret(size: number, offset?: number): Buffer
+  reinterpretUntilZeros(size: number, offset?: number): Buffer
+}
 const nodeRef: INodeRef = require('bindings')('ref')
 
 type TBaseTypes =
@@ -94,79 +151,76 @@ type refTypesPointer_Pointer =
 type createTypes = 'byte' | 'char' | 'uchar' | 'short' | 'ushort' | 'int' | 'uint' | 'long' | 'ulong' | 'longlong' | 'ulonglong' | 'size_t' | 'wchar_t'
 type baseCreateTypes = 'void' | 'bool' | 'int8' | 'uint8' | 'int16' | 'uint16' | 'int32' | 'uint32' | 'int64' | 'uint64' | 'float' | 'double' | 'Object' | 'CString' | 'Utf8String'
 
-
-
-
 export const CreateRefBuffer = (buffer: Buffer, type?: Type): RefBuffer => {
-         const RefBuffer = {
-           _refs: [],
-           type,
-           address() {
-             return nodeRef.address(buffer, 0)
-           },
-           hexAddress() {
-             return nodeRef.hexAddress(buffer, 0)
-           },
-           isNull() {
-             return nodeRef.isNull(buffer, 0)
-           },
-           ref() {
-             return ref(<RefBuffer>(<unknown>Object.assign(buffer, RefBuffer)))
-           },
-           deref() {
-             return deref(<RefBuffer>(<unknown>Object.assign(buffer, RefBuffer)))
-           },
-           readObject(offset: number) {
-             return nodeRef.readObject(buffer, offset)
-           },
-           writeObject(obj: Object, offset: number) {
-             return writeObject(<RefBuffer>(<unknown>Object.assign(buffer, RefBuffer)), offset, obj, false)
-           },
-           readPointer(offset: number, size: number) {
-             return nodeRef.readPointer(buffer, offset, size)
-           },
-           writePointer(ptr: Buffer, offset: number) {
-             return writePointer(<RefBuffer>(<unknown>Object.assign(buffer, RefBuffer)), offset, ptr)
-           },
-           readCString(offset?: number) {
-             return nodeRef.readCString(buffer, offset)
-           },
-           writeCString(string: string, offset: number, encoding: BufferEncoding) {
-             return writeCString(buffer, offset, string, encoding)
-           },
-           readInt64BE(offset: number) {
-             return readInt64BE(buffer, offset)
-           },
-           writeInt64BE(val: number, offset: number) {
-             return writeInt64BE(buffer, offset, val)
-           },
-           readUInt64BE(offset: number) {
-             return readUInt64BE(buffer, offset)
-           },
-           writeUInt64BE(val: number, offset: number) {
-             return writeUInt64BE(buffer, offset, val)
-           },
-           readInt64LE(offset: number) {
-             return readInt64LE(buffer, offset)
-           },
-           writeInt64LE(val: number, offset: number) {
-             return writeInt64LE(buffer, offset, val)
-           },
-           readUInt64LE(offset: number) {
-             return readUInt64LE(buffer, offset)
-           },
-           writeUInt64LE(val: number, offset: number) {
-             return writeUInt64LE(buffer, offset, val)
-           },
-           reinterpret(size: number, offset: number) {
-             return reinterpret(buffer, size, offset)
-           },
-           reinterpretUntilZeros(size: number, offset: number) {
-             return reinterpretUntilZeros(buffer, size, offset)
-           },
-         }
-         return <RefBuffer>(<unknown>Object.assign(buffer, RefBuffer))
-       }
+  const RefBuffer = {
+    _refs: [],
+    type,
+    address() {
+      return nodeRef.address(buffer, 0)
+    },
+    hexAddress() {
+      return nodeRef.hexAddress(buffer, 0)
+    },
+    isNull() {
+      return nodeRef.isNull(buffer, 0)
+    },
+    ref() {
+      return ref(<RefBuffer>(<unknown>Object.assign(buffer, RefBuffer)))
+    },
+    deref() {
+      return deref(<RefBuffer>(<unknown>Object.assign(buffer, RefBuffer)))
+    },
+    readObject(offset: number) {
+      return nodeRef.readObject(buffer, offset)
+    },
+    writeObject(obj: Object, offset: number) {
+      return writeObject(<RefBuffer>(<unknown>Object.assign(buffer, RefBuffer)), offset, obj, false)
+    },
+    readPointer(offset: number, size: number) {
+      return nodeRef.readPointer(buffer, offset, size)
+    },
+    writePointer(ptr: Buffer, offset: number) {
+      return writePointer(<RefBuffer>(<unknown>Object.assign(buffer, RefBuffer)), offset, ptr)
+    },
+    readCString(offset?: number) {
+      return nodeRef.readCString(buffer, offset)
+    },
+    writeCString(string: string, offset: number, encoding: BufferEncoding) {
+      return writeCString(buffer, offset, string, encoding)
+    },
+    readInt64BE(offset: number) {
+      return readInt64BE(buffer, offset)
+    },
+    writeInt64BE(val: number, offset: number) {
+      return writeInt64BE(buffer, offset, val)
+    },
+    readUInt64BE(offset: number) {
+      return readUInt64BE(buffer, offset)
+    },
+    writeUInt64BE(val: number, offset: number) {
+      return writeUInt64BE(buffer, offset, val)
+    },
+    readInt64LE(offset: number) {
+      return readInt64LE(buffer, offset)
+    },
+    writeInt64LE(val: number, offset: number) {
+      return writeInt64LE(buffer, offset, val)
+    },
+    readUInt64LE(offset: number) {
+      return readUInt64LE(buffer, offset)
+    },
+    writeUInt64LE(val: number, offset: number) {
+      return writeUInt64LE(buffer, offset, val)
+    },
+    reinterpret(size: number, offset: number) {
+      return reinterpret(buffer, size, offset)
+    },
+    reinterpretUntilZeros(size: number, offset: number) {
+      return reinterpretUntilZeros(buffer, size, offset)
+    },
+  }
+  return <RefBuffer>(<unknown>Object.assign(buffer, RefBuffer))
+}
 const inspectSym = inspect.custom || 'inspect'
 
 const overwriteInspect = (inspect: Function) => {

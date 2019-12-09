@@ -1,4 +1,4 @@
-import { CreateRefBuffer } from '../lib/ref-ts'
+import { CreateRefBuffer } from '../lib'
 import { strictEqual, strict as assert } from 'assert'
 // import weak from 'weak'
 

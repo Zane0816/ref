@@ -1,4 +1,4 @@
-import { derefType, refType, types } from '../lib/ref-ts'
+import { derefType, refType, types } from '../lib'
 import { strict as assert, equal, throws } from 'assert'
 
 describe('types', function() {

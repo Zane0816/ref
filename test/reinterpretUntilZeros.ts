@@ -1,4 +1,4 @@
-import nodeRef, { CreateRefBuffer } from '../lib/ref-ts'
+import nodeRef, { CreateRefBuffer } from '../lib/index'
 import { equal, strict as assert } from 'assert'
 import { readFileSync } from 'fs'
 // import weak from 'weak'

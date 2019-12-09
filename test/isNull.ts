@@ -1,4 +1,4 @@
-import ref from '../lib/ref-ts'
+import ref from '../lib/index'
 import { strictEqual } from 'assert'
 
 describe('isNull', function() {

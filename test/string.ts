@@ -1,4 +1,4 @@
-import ref, { alloc, allocCString, CreateRefBuffer, get, NULL_POINTER, set, types } from '../lib/ref-ts'
+import ref, { alloc, allocCString, CreateRefBuffer, get, NULL_POINTER, set, types } from '../lib/index'
 import { equal, strictEqual, throws, strict as assert } from 'assert'
 
 describe('C string', function() {

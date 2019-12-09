@@ -1,4 +1,4 @@
-import ref, { alloc, types } from '../lib/ref-ts'
+import ref, { alloc, types } from '../lib/index'
 import { equal, strictEqual } from 'assert'
 
 describe('alloc()', function() {
