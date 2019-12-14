@@ -27,7 +27,7 @@
   "main": "./lib/ref.js",
   "scripts": {
     "docs": "node docs/compile",
-    "test": "mocha -r ts-node/register test/types.ts",
+    "test": "mocha -r ts-node/register test/types.ts"
   },
   "dependencies": {
     "bindings": "^1.5.0",
