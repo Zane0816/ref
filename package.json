@@ -24,12 +24,10 @@
     "type": "git",
     "url": "git://github.com/TooTallNate/ref.git"
   },
-  "main": "./dist/index.js",
-  "typings": "./dist/index.d.ts",
+  "main": "./lib/ref.js",
   "scripts": {
     "docs": "node docs/compile",
     "test": "mocha -r ts-node/register test/types.ts",
-    "postinstall": "tsc"
   },
   "dependencies": {
     "bindings": "^1.5.0",
